@@ -1,6 +1,3 @@
-from gameparts.exceptions import CellOccupiedError
-
-
 class Board:
     """Класс, который описывает игровое поле"""
 
@@ -9,7 +6,9 @@ class Board:
     def __init__(self):
         self.board = [[" " for _ in range(3)] for _ in range(3)]
 
-    def make_move(self, coordinate_x: int, coordinate_y: int, symbol: str) -> None:
+    def make_move(self, coordinate_x: int,
+                  coordinate_y: int,
+                  symbol: str) -> None:
         '''Метод обрабатывающий ходы игроков'''
         self.board[coordinate_x][coordinate_y] = symbol
 
@@ -26,9 +25,10 @@ class Board:
 
     def check_win(self, player):
         for i in range(self.field_size):
-            if (all([self.board[i][j] == player for j in range(self.field_size)])
-                or 
-                all([self.board[j][i] == player for j in range(self.field_size)])):
+            if (all([self.board[i][j] == player
+                     for j in range(self.field_size)]) or
+                all([self.board[j][i] == player
+                     for j in range(self.field_size)])):
                 return True
 
         if (
@@ -37,7 +37,7 @@ class Board:
             self.board[0][2] == self.board[1][1] == self.board[2][0] == player
         ):
             return True
-        
+
         return False
 
     def __str__(self):
