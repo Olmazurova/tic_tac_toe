@@ -1,5 +1,5 @@
 from gameparts import Board
-from gameparts.exceptions import FieldIndexError
+from gameparts.exceptions import CellOccupiedError, FieldIndexError
 
 
 def main():
@@ -24,12 +24,21 @@ def main():
                 if column < 0 or column >= game.field_size:
                     raise FieldIndexError
 
+                if game.board[row][column] != ' ':
+                    # Вот тут выбрасывается новое исключение.
+                    raise CellOccupiedError
+
             except FieldIndexError:
                 print(
                     'Значение должно быть неотрицательным и меньше '
                     f'{game.field_size}.'
                 )
                 print('Пожалуйста, введите значения для строки и столбца заново.')
+                continue
+
+            except CellOccupiedError:
+                print('Ячейка занята')
+                print('Введите другие координаты.')
                 continue
 
             except ValueError:
@@ -46,8 +55,15 @@ def main():
         game.make_move(row, column, current_player)
         print('Ход сделан!')
         game.display()
-        current_player = 'O' if current_player == 'X' else 'X'
 
+        if game.check_win(current_player):
+            print(f'Победили {current_player}.')
+            running = False
+        elif game.is_board_full():
+            print('Ничья!')
+            running = False
+
+        current_player = 'O' if current_player == 'X' else 'X'
 
 
 if __name__ == '__main__':
