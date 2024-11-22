@@ -3,9 +3,8 @@ from gameparts.exceptions import CellOccupiedError, FieldIndexError
 
 
 def save_result(text: str) -> None:
-    file = open('results.txt', 'a', encoding='utf-8')
-    file.write(text + '\n')
-    file.close()
+    with open('results.txt', 'a', encoding='utf-8') as file:
+        file.write(text + '\n')
 
 
 def main():
